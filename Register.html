@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="Header.css">
+    <link rel="stylesheet" href="register.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Register</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Login Page -->
+    <div id="login">
+        <form>  <!-- action="/submit-register" method="post" -->
+            <h1>Registration Form</h1>
+            <div>
+                <label for="">Name</label>
+                <input type="text" required name="name">
+            </div>
+
+            <div>
+                <label for="">Email</label>
+                <input type="text" required name="email">
+            </div>
+
+            <div>
+                <label for="">Password</label>
+                <input type="password" required name="password">
+            </div>
+            <div>
+                <p>Already Have Account ? <a href="/login">Login</a></p>
+            </div>
+
+            <div id="submit">
+                <input type="submit" value="Register">
+
+            </div>
+        </form>
+    </div>
+    <script>
+        const form = document.querySelector("form")
+        form.addEventListener("submit",(e)=>{
+            e.preventDefault();
+            let name = e.target.name.value;
+            let email= e.target.email.value;
+            let password=e.target.password.value;
+            async function sendData() {
+                const response=await fetch("http://localhost:4400/submit-register",{
+                    method:"POST",
+                    headers:{ "Content-Type":"plain/text"},
+                    body: JSON.stringify({name: name,email: email,password: password})
+                })
+                const res= await response.text();
+                form.reset();
+                if(res=="User Registered Successfully"){
+                    window.location.href="/login"
+                }
+                alert(res);
+            }
+            sendData();
+        })
+    </script>
+</body>
+
+</html>
